@@ -21,7 +21,7 @@ let URIDB;
 if (process.env.ENV === 'dev') {
     URIDB = 'mongodb://localhost:27017/cafe';
 } else {
-    URIDB = 'mongodb+srv://geralt:impro123@cluster0.22tg2.mongodb.net/cafe';
+    URIDB = process.env.MONGO_URI;
 }
 
 process.env.MongoURI = URIDB;
