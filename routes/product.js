@@ -58,6 +58,28 @@ app.get('/products/:id', (req, res) => {
     });
 });
 
+app.get('/products/search/:term', [verifyToken], (req, res) => {
+    let termino = req.params.term;
+
+    let regex = new RegExp(termino, 'i');
+
+    Product.find({ name: regex })
+        .populate('user', 'name')
+        .populate('category', 'description')
+        .exec((err, productDB) => {
+            if (err) {
+                return res.status(400).json({
+                    ok: false,
+                    err,
+                });
+            }
+            return res.json({
+                ok: true,
+                product: productDB,
+            })
+        });
+});
+
 app.post('/products', [verifyToken, verifyRole], (req, res) => {
     let body = req.body;
     let product = new Product({
